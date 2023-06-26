@@ -1,0 +1,69 @@
+<template>
+    <lightning-card title="Dynamic Query 6" icon-name="utility:search">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                label="Select Object"
+                placeholder="Select an Object"
+                options={objectOptions}
+                value={selectedObject}
+                onchange={handleObjectChange}>
+            </lightning-combobox>
+            <lightning-dual-listbox
+                label="Select Fields"
+                source-label="Available Fields"
+                selected-label="Selected Fields"
+                options={fieldOptions}
+                value={selectedFields}
+                onchange={handleFieldChange}>
+            </lightning-dual-listbox>
+        </div>
+        <div class="c-container">
+            <template for:each={nooffilters} for:item="item" for:index="index">
+            <lightning-layout key={item}>
+                <lightning-layout-item padding="around-small" size="3">
+                    <lightning-combobox
+                    label="Field"
+                    placeholder="Select a Field"
+                    options={fieldOptions}
+                    value={condition.field}
+                onchange={handleFieldSelection} variant="label-hidden"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="3">
+                    <lightning-combobox
+                    label="Operator"
+                    placeholder="Select an Operator"
+                    options={operators}
+                    value={condition.operator}
+                onchange={handleOperatorSelection} variant="label-hidden"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="3">
+                    <lightning-input
+                    label="Value"
+                    placeholder="Enter a Value"
+                    value={condition.value}
+                onchange={handleValueSelection} variant="label-hidden" ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="3">
+                                <lightning-button-icon icon-name="utility:add"  alternative-text="add" title="add" onclick={addFilter}></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:delete"  alternative-text={item} title="Settings" onclick={deleteFilter} data-id={index}></lightning-button-icon>
+                <lightning-button label="AddFilter" onclick={evaluateStatements}></lightning-button>
+                </lightning-layout-item>
+                
+            </lightning-layout>
+            </template>
+        </div>
+</lightning-card >
+<lightning-button
+            label="Execute Query"
+            variant="brand"
+            onclick={executeQuery}>
+        </lightning-button>
+<template if:true={queryResult}>
+    <lightning-datatable
+        key-field="Id"
+        data={queryResult}
+        columns={columns}
+        class="slds-scrollable"
+    ></lightning-datatable>
+</template>
+</template>
